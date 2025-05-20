@@ -1,0 +1,16 @@
+# Bytecode
+__pycache__/
+*.py[cod]
+
+# Virtual Environment
+venv/
+
+# Environment Variables
+.env
+
+# OS junk files
+.DS_Store
+Thumbs.db
+
+# AWS or security logs
+*.log

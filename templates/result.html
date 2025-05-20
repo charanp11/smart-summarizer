@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Summary</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <style>
+    body {
+      background-color: #f6f6f6;
+    }
+    .summary-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+    .summary-box {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border-left: 6px solid #ffa726;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      max-width: 900px;
+      width: 100%;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body class="bg-light">
+  <div class="container-fluid py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-10 col-xl-8">
+        <h2 class="text-center text-success mb-4">📝 Summary</h2>
+
+        {% if "⚠️" in summary %}
+        <div class="alert alert-warning border border-warning">
+          {{ summary }}
+        </div>
+        {% else %}
+        <div class="p-4 border-start border-4 border-warning bg-white rounded shadow-sm" style="max-height: 500px; overflow-y: auto;">
+          <p id="summary-text" style="white-space: pre-wrap;">{{ summary }}</p>
+        </div>
+        {% endif %}
+
+        <div class="mt-4 d-flex flex-wrap gap-3 justify-content-center">
+          <button onclick="copyToClipboard()" class="btn btn-info">Copy to Clipboard</button>
+
+          <div class="dropdown">
+            <button class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown">Download</button>
+            <ul class="dropdown-menu">
+              <li>
+                <form action="/download_txt" method="POST" class="px-3">
+                  <input type="hidden" name="summary" value="{{ summary }}">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button type="submit" class="dropdown-item">As TXT</button>
+                </form>
+              </li>
+              <li>
+                <form action="/download_pdf" method="POST" class="px-3">
+                  <input type="hidden" name="summary" value="{{ summary }}">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button type="submit" class="dropdown-item">As PDF</button>
+                </form>
+              </li>
+            </ul>
+          </div>
+
+          <a href="/" class="btn btn-outline-dark">← Back</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function copyToClipboard() {
+      const text = document.getElementById("summary-text").innerText;
+      navigator.clipboard.writeText(text);
+      alert("Summary copied to clipboard!");
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
