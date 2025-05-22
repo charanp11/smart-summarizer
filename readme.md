@@ -82,6 +82,35 @@ smart_summarizer/
 
 </details>
 
+## 🔄 Continuous Deployment (CD)
+
+This project uses **CI/CD via Google Cloud Build** and **Cloud Run** with a Dockerfile-based deployment.
+
+Every push to the `main` branch of this GitHub repository:
+
+1. ✅ Triggers a **Cloud Build** pipeline
+2. 🐳 Rebuilds the app using the root-level `Dockerfile`
+3. 🚀 Deploys the latest version automatically to **Google Cloud Run**
+
+| Step             | Tool                    |
+|------------------|-------------------------|
+| Source Control   | GitHub                  |
+| Container Build  | Docker + Cloud Build    |
+| Deployment       | Google Cloud Run        |
+| Trigger          | Push to `main` branch   |
+
+---
+
+### 📦 Docker & Runtime Notes
+
+- The container exposes port `8080` and follows `$PORT` variable convention
+- Runs on 1 vCPU / 4GiB memory
+- Concurrency set to `1` for memory safety
+- Max instances: `2` to stay in free tier
+
+---
+
+
 ## 🧪 How to Run Locally
 
 ```bash
@@ -92,14 +121,10 @@ source venv/bin/activate  or use venv\Scripts\activate on Windows
 pip install -r requirements.txt
 python app.py
 
-You’ll need to create a .env file with:
+🔐 Create a .env file with the following:
 
 SECRET_KEY=your_flask_key
 AWS_ACCESS_KEY_ID=your_aws_key
 AWS_SECRET_ACCESS_KEY=your_aws_secret
 AWS_BUCKET_NAME=your_bucket_name
 AWS_REGION=your_region
-
-## Updated the Trigger again
-## Trigger final test !!!!
-
