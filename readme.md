@@ -1,58 +1,63 @@
 # 🧠 Smart Summarizer
 
-Smart Summarizer is a powerful AI-based web application that enables users to generate custom summaries from a wide range of content inputs including text, PDFs, images, TXT files, and blog/article links. With support for user-defined prompts and dynamic formatting, the app delivers clean, downloadable summaries using secure AWS S3 integration.
+Smart Summarizer is a powerful AI-based web application that intelligently summarizes content from multiple formats, including plain text, PDFs, images, `.txt` files, and blog/article links. With user-defined prompt support and clean, downloadable summaries, it's perfect for productivity and knowledge compression.
 
-> 🔒 Built with production-grade security, responsive UI, and a modular architecture — this project demonstrates real-world cloud, AI, and web development skills.
-
----
-
-## 🚀 Live Demo
-
-🔗 [Smart Summarizer App]()  
+🔗 **Live App:**  
+👉 [Smart Summarizer on Google Cloud Run](https://smart-summarizer-259284759346.us-central1.run.app)
 
 ---
 
-## ✨ Project Highlights
+## ✨ Highlights
 
-- 🧠 **AI Summarization with BART**: Uses `facebook/bart-large-cnn` via Hugging Face Transformers for high-quality, extractive text summarization.
-- 💬 **User-Prompt Driven**: Accepts natural language instructions like:
-  - “Summarize in 150 words”
-  - “Bullet points only”
-  - “Make it sound persuasive”
-- 🖼️ **Multi-format Input Support**:
-  - Plain text
-  - PDF files
-  - Images (OCR using Tesseract)
-  - `.txt` documents
-  - Blog/article links (scraped using BeautifulSoup)
-- ☁️ **Cloud Integration**:
-  - Summaries can be downloaded as `.txt` or `.pdf` files
-  - Files are served through **pre-signed AWS S3 URLs**
-- 🎨 **Modern UI/UX**:
-  - Fully responsive Bootstrap 5 layout
-  - Adaptive design for all screen sizes
-  - Dropdown download options and smooth scrolling
-- 🔐 **Security Features**:
-  - CSRF protection (via Flask-WTF)
-  - Rate limiting to prevent abuse (via Flask-Limiter)
+- 🧠 **Summarization with BART**: Uses `facebook/bart-large-cnn` via Hugging Face Transformers for high-quality extractive summaries.
+- 💬 **Prompt-based Customization**: Accepts natural instructions like:
+  - "Summarize in bullet points"
+  - "Limit to 100 words"
+  - "Make it sound professional"
+- 🖼️ **Supports Various Input Types**:
+  - Text 📝
+  - PDF files 📄
+  - Images (OCR with EasyOCR) 🖼️
+  - .TXT files 📃
+  - Blog/article URLs 🌐
+- ☁️ **Cloud Uploads**:
+  - Summaries downloadable as `.txt` and `.pdf`
+  - Stored via pre-signed AWS S3 URLs
+- 🎨 **Responsive UI**:
+  - Bootstrap 5 frontend
+  - Adaptive layout with scrollable output
+  - Modern UX with clean prompt controls
+- 🔐 **Security Built-In**:
+  - CSRF protection via Flask-WTF
+  - Rate limiting via Flask-Limiter
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer        | Technology |
-|--------------|------------|
-| ⚙️ Backend   | Flask (Python) |
-| 🧠 AI Model | Hugging Face Transformers (BART) |
-| 🌐 Frontend | HTML, Bootstrap 5 |
-| ☁️ Cloud    | AWS S3 for file delivery |
-| 🧰 Utilities | Tesseract OCR, PyMuPDF, pdf2image |
-| 🔐 Security | Flask-WTF (CSRF), Flask-Limiter |
-| 📦 Deployment | Render (free-tier cloud app platform) |
+| Layer          | Tech                                |
+|----------------|--------------------------------------|
+| ⚙️ Backend      | Flask (Python)                       |
+| 🤖 Model        | Hugging Face Transformers (BART)     |
+| 🌐 Frontend     | HTML, Bootstrap 5                    |
+| 📦 Deployment   | Google Cloud Run (4GiB RAM, 1 CPU)   |
+| ☁️ Storage      | AWS S3 for file uploads              |
+| 🧠 OCR          | EasyOCR (Python)                     |
+| 🔐 Security     | Flask-WTF, Flask-Limiter             |
 
 ---
 
-## 📁 Project Structure
+## ⚡ Performance Optimizations
+
+- 🚀 Lazy loading of BART & EasyOCR reduces startup memory usage
+- 🧠 Concurrency limited to 1 per instance to avoid memory crashes
+- 💸 Cloud Run autoscaling limited to 2 instances for free-tier safety
+- 🧹 Garbage filtering on OCR (removes unwanted links like CNN, Twitter)
+
+---
+
+<details>
+<summary>📁 Click to view project structure</summary>
 
 smart_summarizer/
 ├── app.py # Main Flask app
@@ -73,6 +78,8 @@ smart_summarizer/
 ├── requirements.txt # Python dependencies
 ├── runtime.txt # Required for Render deployment
 └── README.md
+
+</details>
 
 ## 🧪 How to Run Locally
 

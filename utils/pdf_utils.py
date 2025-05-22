@@ -1,7 +1,6 @@
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from textwrap import wrap
-import fitz # PyMuPDF
 
 def save_summary_as_pdf(summary_text, file_path):
     c = canvas.Canvas(file_path, pagesize=letter)
@@ -20,6 +19,7 @@ def save_summary_as_pdf(summary_text, file_path):
     return file_path
 
 def extract_text_from_pdf(filepath):
+    import fitz  # PyMuPDF
     text = ""
     with fitz.open(filepath) as doc:
         for page in doc:

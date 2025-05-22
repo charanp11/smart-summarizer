@@ -1,7 +1,7 @@
-import requests
-from bs4 import BeautifulSoup
-
 def extract_from_url(url):
+    import requests
+    from bs4 import BeautifulSoup
+
     try:
         response = requests.get(url, timeout=10)
         response.raise_for_status()

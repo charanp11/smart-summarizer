@@ -1,12 +1,9 @@
-from transformers import pipeline
+model = None
+tokenizer = None
 
-summarizer = pipeline(
-    "summarization",
-    model="facebook/bart-large-cnn",
-    tokenizer="facebook/bart-large-cnn"
-)
+def generate_summary(text, instruction=None):
+    global model, tokenizer
 
-def generate_summary(text, instruction=None, max_length=180, min_length=60):
     if not text or len(text.strip()) < 30:
         return "⚠️ Not enough text to summarize."
 
@@ -20,14 +17,13 @@ def generate_summary(text, instruction=None, max_length=180, min_length=60):
         text = f"Summarize in a casual, easy-to-understand tone:\n\n{text}"
     elif "key takeaways" in instruction.lower():
         text = f"List key takeaways:\n\n{text}"
-    else:
-        text = f"{instruction}\n\n{text}" if instruction else text
+    elif instruction:
+        text = f"{instruction}\n\n{text}"
 
-    # Default max_length/min_length
+    # Default max/min length
     max_length = 300
     min_length = 150
 
-    # Override only if prompt says shorter
     if "100 words" in instruction:
         max_length = 130
         min_length = 90
@@ -42,7 +38,21 @@ def generate_summary(text, instruction=None, max_length=180, min_length=60):
         min_length = 250
 
     try:
-        result = summarizer(text, max_length=max_length, min_length=min_length, do_sample=False)
-        return result[0]['summary_text'].strip()
+        if model is None or tokenizer is None:
+            from transformers import BartTokenizer, BartForConditionalGeneration
+            import torch
+            tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
+            model = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn")
+
+        inputs = tokenizer([text], max_length=1024, return_tensors="pt", truncation=True)
+        summary_ids = model.generate(
+            inputs["input_ids"],
+            max_length=max_length,
+            min_length=min_length,
+            length_penalty=2.0,
+            num_beams=4,
+            early_stopping=True
+        )
+        return tokenizer.decode(summary_ids[0], skip_special_tokens=True).strip()
     except Exception as e:
         return f"⚠️ Summarization error: {str(e)}"
