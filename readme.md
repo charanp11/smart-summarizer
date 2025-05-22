@@ -56,6 +56,7 @@ Smart Summarizer is a powerful AI-based web application that intelligently summa
 
 ---
 
+
 <details>
 <summary>📁 Click to view project structure</summary>
 
